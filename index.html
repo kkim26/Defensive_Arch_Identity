@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920" />
+  <title>friendly — defended architecture</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     LANDING SCREEN
+════════════════════════════════════════════════════════════════ -->
+<div class="screen active" id="screen-landing">
+
+  <nav>
+    <div class="nav-logo" onclick="showScreen('landing')">
+      <span class="nl-red">f</span><span class="nl-r">r</span><span class="nl-r">i</span><span class="nl-red">e</span><span class="nl-red">n</span><span class="nl-red">d</span><span class="nl-r">l</span><span class="nl-r">y</span>
+    </div>
+    <div class="nav-links">
+      <div class="nav-link active" id="nav-home"   onclick="showScreen('landing')">Overview</div>
+      <div class="nav-link"        id="nav-matrix" onclick="showScreen('matrix')">Friction matrix</div>
+    </div>
+  </nav>
+
+  <div class="landing-body">
+
+    <!-- Left: question + CTAs -->
+    <div class="landing-left">
+      <div class="eyebrow">Defended architecture · Georgia Tech campus</div>
+      <h1 class="hero-q">
+        How does <em>identity</em> affect people's<br>
+        experience with defensive architecture<br>
+        at Georgia Tech?
+      </h1>
+      <p class="hero-sub">
+        The same bench, bollard, or fence means something entirely different
+        depending on who you are. This project maps 55 instances of hostile
+        design across GT's campus — and asks: <strong>friendly for whom?</strong>
+      </p>
+      <div class="cta-row">
+        <button class="btn-primary" onclick="showScreen('matrix')">Explore the matrix</button>
+      </div>
+    </div>
+
+    <!-- Right: 2×2 stat grid -->
+    <div class="landing-right">
+      <div class="stat-block">
+        <div class="stat-num">55</div>
+        <div class="stat-label">Instances documented</div>
+        <div class="stat-desc">Photographed and catalogued across GT campus and surrounding Midtown blocks.</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Categories of hostile design</div>
+        <div class="stat-desc">From anti-rest benches to spiked fences — each targets a different behavior.</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Personas compared</div>
+        <div class="stat-desc">Student, visitor, and unhoused — the same space, radically different friction.</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">1→5</div>
+        <div class="stat-label">Friction scale</div>
+        <div class="stat-desc">From invisible inconvenience to total exclusion from a survival need.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     MATRIX SCREEN
+════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-matrix">
+
+  <nav>
+    <div class="nav-logo" onclick="showScreen('landing')">
+      <span class="nl-red">f</span><span class="nl-r">r</span><span class="nl-r">i</span><span class="nl-red">e</span><span class="nl-red">n</span><span class="nl-red">d</span><span class="nl-r">l</span><span class="nl-r">y</span>
+    </div>
+    <div class="nav-links">
+      <div class="nav-link"        id="nav-home2"   onclick="showScreen('landing')">Overview</div>
+      <div class="nav-link active" id="nav-matrix2" onclick="showScreen('matrix')">Friction matrix</div>
+    </div>
+  </nav>
+
+  <div class="matrix-body">
+
+    <div class="matrix-intro">
+      <h2 class="matrix-title">The same design. <em>Different experiences.</em></h2>
+      <span class="matrix-subtitle">Circle size = instances documented &nbsp;·&nbsp; Color = friction score &nbsp;·&nbsp; Hover cells for context</span>
+    </div>
+
+    <div class="matrix-card">
+
+      <!-- Persona headers -->
+      <div class="mh-row">
+        <div class="mh-spacer"></div>
+        <div class="mh-cols" id="mh-cols"></div>
+      </div>
+
+      <!-- Data rows (built by JS) -->
+      <div class="m-rows" id="m-rows"></div>
+
+      <!-- Legend -->
+      <div class="legend">
+        <span class="leg-t">Friction</span>
+        <div class="leg-items" id="leg-items"></div>
+        <span class="leg-note">Hover any cell for description</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ─── Screen switching ─────────────────────────────────────────────────────
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+
+  // Nav active states
+  const isLanding = name === 'landing';
+  document.getElementById('nav-home').classList.toggle('active', isLanding);
+  document.getElementById('nav-matrix').classList.toggle('active', !isLanding);
+  document.getElementById('nav-home2').classList.toggle('active', isLanding);
+  document.getElementById('nav-matrix2').classList.toggle('active', !isLanding);
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────────
+const PERSONAS = [
+  { key: 'student',  label: 'student',  sub: 'BuzzCard holder · campus access' },
+  { key: 'visitor',  label: 'visitor',  sub: 'Public guest · short term stay' },
+  { key: 'unhoused', label: 'unhoused', sub: 'No indoor access · very limited options' },
+];
+
+const ROWS = [
+  {
+    label: 'Anti-rest', sub: 'Sleeping + sitting', count: 22,
+    scores: {
+      student:  { s: 2, d: 'Can retreat indoors to Clough, dorms, or dining at any time.' },
+      visitor:  { s: 2, d: 'Visitors often look for places to sit while waiting, but other seating options exist nearby.' },
+      unhoused: { s: 5, d: 'Direct assault on primary survival need — sleep and rest.' },
+    }
+  },
+  {
+    label: 'Anti-vehicle', sub: 'Cycling + scootering', count: 10,
+    scores: {
+      student:  { s: 3, d: 'Many students scooter or bike to class and are blocked by bollards, though walking remains an option.' },
+      visitor:  { s: 2, d: 'Confusing for Uber pickup zones, but generally accepted as city design.' },
+      unhoused: { s: 1, d: 'Minimal direct impact on their primary needs or movement.' },
+    }
+  },
+  {
+    label: 'Anti-activity', sub: 'Skateboarding', count: 16,
+    scores: {
+      student:  { s: 3, d: 'Students who skateboard find most ledges and rails fitted with brackets, leaving very few spots on campus.' },
+      visitor:  { s: 1, d: 'Brackets and bolts blend into the architecture, barely noticeable.' },
+      unhoused: { s: 2, d: 'Limits movement options but does not affect survival needs directly.' },
+    }
+  },
+  {
+    label: 'Anti-access', sub: 'Trespassing + fencing', count: 5,
+    scores: {
+      student:  { s: 1, d: 'Has alternative indoor routes and BuzzCard access to most buildings.' },
+      visitor:  { s: 1, d: 'Standard property boundary, expected and respected.' },
+      unhoused: { s: 5, d: 'Excludes them from areas and potential rest places, removing limited shelter options.' },
+    }
+  },
+  {
+    label: 'Anti-vandalism', sub: 'Surveillance + signage', count: 4,
+    scores: {
+      student:  { s: 4, d: 'Taking the "T" off signs is a student tradition — engraved letters directly remove that ability.' },
+      visitor:  { s: 1, d: 'Standard campus security infrastructure, no behavioral impact.' },
+      unhoused: { s: 1, d: "Removing T's from signs is a student tradition — this intervention has no relevance to unhoused individuals." },
+    }
+  },
+];
+
+// ─── Helpers ──────────────────────────────────────────────────────────────
+function frictionColor(s) {
+  const stops = [[1,'#888780'],[2,'#BA7517'],[3,'#D85A30'],[4,'#A32D2D'],[5,'#E8291C']];
+  for (const [v, c] of stops) { if (s <= v) return c; }
+  return '#E8291C';
+}
+function scoreLabel(s) {
+  return ['','Invisible','Inconvenience','Minor deterrence','Major barrier','Total exclusion'][s] || '';
+}
+function bubbleSize(count) {
+  // min 44px at count=4, max 88px at count=22
+  return Math.round(44 + ((count - 4) / (22 - 4)) * 44);
+}
+
+// ─── Build persona headers ────────────────────────────────────────────────
+const mhCols = document.getElementById('mh-cols');
+PERSONAS.forEach(p => {
+  const d = document.createElement('div');
+  d.className = 'mh-cell';
+  d.innerHTML = `<div class="persona-name">${p.label}</div><div class="persona-sub">${p.sub}</div>`;
+  mhCols.appendChild(d);
+});
+
+// ─── Build data rows ──────────────────────────────────────────────────────
+const mRows = document.getElementById('m-rows');
+ROWS.forEach(row => {
+  const div = document.createElement('div');
+  div.className = 'm-row';
+
+  let cellsHTML = '';
+  PERSONAS.forEach(p => {
+    const sc   = row.scores[p.key];
+    const sz   = bubbleSize(row.count);
+    const col  = frictionColor(sc.s);
+    const opac = (0.18 + sc.s * 0.16).toFixed(2);
+    cellsHTML += `
+      <div class="m-cell">
+        <div class="bubble-col">
+          <div class="bubble" style="width:${sz}px;height:${sz}px;background:${col};opacity:${opac};"></div>
+          <div class="score-lbl" style="color:${col};">${sc.s}/5</div>
+        </div>
+        <div class="tt">
+          <div class="tt-s" style="color:${col};">${sc.s}/5 — ${scoreLabel(sc.s)}</div>
+          <div class="tt-d">${sc.d}</div>
+        </div>
+      </div>`;
+  });
+
+  div.innerHTML = `
+    <div class="m-rlabel">
+      <div class="m-rname">${row.label}</div>
+      <div class="m-rsub">${row.sub}</div>
+      <div class="m-rcnt">${row.count} instances</div>
+    </div>
+    <div class="m-cells">${cellsHTML}</div>`;
+  mRows.appendChild(div);
+});
+
+// ─── Build legend ─────────────────────────────────────────────────────────
+const legItems = document.getElementById('leg-items');
+[[1,'Invisible'],[2,'Inconvenience'],[3,'Minor deterrence'],[4,'Major barrier'],[5,'Total exclusion']].forEach(([s, l]) => {
+  const span = document.createElement('span');
+  span.className = 'leg-item';
+  span.innerHTML = `<span class="leg-dot" style="background:${frictionColor(s)};"></span>${s} — ${l}`;
+  legItems.appendChild(span);
+});
+</script>
+
+</body>
+</html>
