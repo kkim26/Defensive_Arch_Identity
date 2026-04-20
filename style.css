@@ -98,7 +98,7 @@ nav {
 }
 .hero-q em { font-style: normal; color: #E8291C; }
 .hero-sub {
-  font-size: 20px;
+  font-size: 26px;
   color: #666;
   line-height: 1.75;
   max-width: 520px;
@@ -192,7 +192,7 @@ nav {
   color: #111;
 }
 .matrix-title em { font-style: normal; color: #E8291C; }
-.matrix-subtitle { font-size: 14px; color: #999; letter-spacing: 0.02em; }
+.matrix-subtitle { font-size: 14px; color: #787777; letter-spacing: 0.02em; }
 
 .matrix-card {
   background: #fff;
@@ -212,14 +212,14 @@ nav {
 .mh-cols   { display: flex; flex: 1; }
 .mh-cell   { flex: 1; text-align: center; padding: 0 8px 14px; }
 .persona-name {
-  font-size: clamp(18px, 1.7vw, 26px);
+  font-size: clamp(22px, 1.7vw, 30px);
   font-weight: 900;
   color: #111;
   letter-spacing: -0.02em;
   line-height: 1;
   margin-bottom: 5px;
 }
-.persona-sub { font-size: 13px; color: #aaa; line-height: 1.45; }
+.persona-sub { font-size: 13px; color: #787777; line-height: 1.45; }
 
 /* Data rows */
 .m-rows { flex: 1; display: flex; flex-direction: column; min-height: 0; }
@@ -233,9 +233,9 @@ nav {
 .m-row:last-child { border-bottom: 1px solid #ECEAE4; }
 
 .m-rlabel { width: 210px; flex-shrink: 0; padding-right: 16px; }
-.m-rname  { font-size: 16px; font-weight: 700; color: #111; }
-.m-rsub   { font-size: 13px; color: #bbb; margin-top: 3px; }
-.m-rcnt   { font-size: 14px; font-weight: 700; color: #555; margin-top: 5px; }
+.m-rname  { font-size: 26px; font-weight: 700; color: #111; }
+.m-rsub   { font-size: 16px; color: #787777; margin-top: 3px; }
+.m-rcnt   { font-size: 16px; font-weight: 700; color: #555; margin-top: 5px; }
 
 .m-cells { display: flex; flex: 1; }
 .m-cell  {
@@ -276,7 +276,7 @@ nav {
   white-space: normal;
 }
 .tt-s { font-weight: 700; margin-bottom: 4px; }
-.tt-d { color: #bbb; }
+.tt-d { color: #787777; }
 .m-cell:hover .tt { opacity: 1; }
 .tt::after {
   content: '';
