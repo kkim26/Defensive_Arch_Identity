@@ -1,49 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=1920" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1920"/>
   <title>friendly — defended architecture</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════════════
-     LANDING SCREEN
-════════════════════════════════════════════════════════════════ -->
-<div class="screen active" id="screen-landing">
+<!-- ════════════════════════════════════════
+     SPLASH
+════════════════════════════════════════ -->
+<div class="screen active" id="screen-splash">
+  <div class="splash-inner">
+    <div class="splash-logo">
+      <span class="sl-red">f</span><span class="sl-r">r</span><span class="sl-r">i</span><span class="sl-red">e</span><span class="sl-red">n</span><span class="sl-red">d</span><span class="sl-r">l</span><span class="sl-r">y</span>
+    </div>
+    <div class="splash-tagline">defended architecture &nbsp;·&nbsp; Georgia Tech &amp; Midtown</div>
+    <h1 class="splash-q">How does <em>identity</em> affect people's experience<br>with defensive architecture at Georgia Tech?</h1>
+    <p class="splash-sub">The same bench, bollard, or fence means something entirely different depending on who you are. This project maps 55 instances of hostile design across GT's campus — and asks: friendly for whom?</p>
+    <div class="splash-btns">
+      <button class="btn-primary" onclick="showScreen('landing')">Explore the project</button>
+      <button class="btn-outline" onclick="showScreen('map')">View campus map</button>
+      <button class="btn-outline" onclick="showScreen('matrix')">Friction matrix</button>
+    </div>
+  </div>
+  <div class="splash-count">55 instances documented &nbsp;·&nbsp; 5 categories &nbsp;·&nbsp; 3 personas</div>
+</div>
 
+<!-- ════════════════════════════════════════
+     LANDING
+════════════════════════════════════════ -->
+<div class="screen" id="screen-landing">
   <nav>
-    <div class="nav-logo" onclick="showScreen('landing')">
+    <div class="nav-logo" onclick="showScreen('splash')">
       <span class="nl-red">f</span><span class="nl-r">r</span><span class="nl-r">i</span><span class="nl-red">e</span><span class="nl-red">n</span><span class="nl-red">d</span><span class="nl-r">l</span><span class="nl-r">y</span>
     </div>
     <div class="nav-links">
-      <div class="nav-link active" id="nav-home"   onclick="showScreen('landing')">Overview</div>
-      <div class="nav-link"        id="nav-matrix" onclick="showScreen('matrix')">Friction matrix</div>
+      <div class="nav-link active" id="nl-overview" onclick="showScreen('landing')">Overview</div>
+      <div class="nav-link" id="nl-map"      onclick="showScreen('map')">Campus map</div>
+      <div class="nav-link" id="nl-matrix"   onclick="showScreen('matrix')">Friction matrix</div>
     </div>
   </nav>
-
   <div class="landing-body">
-
-    <!-- Left: question + CTAs -->
     <div class="landing-left">
       <div class="eyebrow">Defended architecture · Georgia Tech campus</div>
-      <h1 class="hero-q">
-        How does <em>identity</em> affect people's<br>
-        experience with defensive architecture<br>
-        at Georgia Tech?
-      </h1>
-      <p class="hero-sub">
-        The same bench, bollard, or fence means something entirely different
-        depending on who you are. This project maps 55 instances of hostile
-        design across GT's campus — and asks: <strong>friendly for whom?</strong>
-      </p>
+      <h1 class="hero-q">How does <em>identity</em> affect people's<br>experience with defensive architecture<br>at Georgia Tech?</h1>
+      <p class="hero-sub">The same bench, bollard, or fence means something entirely different depending on who you are. This project maps 55 instances of hostile design and asks: <strong>friendly for whom?</strong></p>
       <div class="cta-row">
-        <button class="btn-primary" onclick="showScreen('matrix')">Explore the matrix</button>
+        <button class="btn-primary" onclick="showScreen('map')">Explore campus map</button>
+        <button class="btn-ghost"   onclick="showScreen('matrix')">View friction matrix</button>
       </div>
     </div>
-
-    <!-- Right: 2×2 stat grid -->
     <div class="landing-right">
       <div class="stat-block">
         <div class="stat-num">55</div>
@@ -66,135 +75,243 @@
         <div class="stat-desc">From invisible inconvenience to total exclusion from a survival need.</div>
       </div>
     </div>
-
   </div>
 </div>
 
-
-<!-- ══════════════════════════════════════════════════════════════
-     MATRIX SCREEN
-════════════════════════════════════════════════════════════════ -->
-<div class="screen" id="screen-matrix">
-
+<!-- ════════════════════════════════════════
+     MAP
+════════════════════════════════════════ -->
+<div class="screen" id="screen-map">
   <nav>
-    <div class="nav-logo" onclick="showScreen('landing')">
+    <div class="nav-logo" onclick="showScreen('splash')">
       <span class="nl-red">f</span><span class="nl-r">r</span><span class="nl-r">i</span><span class="nl-red">e</span><span class="nl-red">n</span><span class="nl-red">d</span><span class="nl-r">l</span><span class="nl-r">y</span>
     </div>
     <div class="nav-links">
-      <div class="nav-link"        id="nav-home2"   onclick="showScreen('landing')">Overview</div>
-      <div class="nav-link active" id="nav-matrix2" onclick="showScreen('matrix')">Friction matrix</div>
+      <div class="nav-link" id="nm-overview" onclick="showScreen('landing')">Overview</div>
+      <div class="nav-link active" id="nm-map" onclick="showScreen('map')">Campus map</div>
+      <div class="nav-link" id="nm-matrix"   onclick="showScreen('matrix')">Friction matrix</div>
     </div>
   </nav>
+  <div class="map-body">
+    <div id="map-el"></div>
+    <!-- Category filters -->
+    <div class="map-filters">
+      <button class="filt-btn on"  data-cat="all">All (55)</button>
+      <button class="filt-btn"     data-cat="rest">Anti-rest</button>
+      <button class="filt-btn"     data-cat="vehicle">Anti-vehicle</button>
+      <button class="filt-btn"     data-cat="activity">Anti-activity</button>
+      <button class="filt-btn"     data-cat="access">Anti-access</button>
+      <button class="filt-btn"     data-cat="vandalism">Anti-vandalism</button>
+    </div>
+    <!-- Legend -->
+    <div class="map-legend">
+      <div class="leg-row"><div class="leg-dot" style="background:#5B7FC4"></div>Anti-rest</div>
+      <div class="leg-row"><div class="leg-dot" style="background:#3E9162"></div>Anti-vehicle</div>
+      <div class="leg-row"><div class="leg-dot" style="background:#C4703A"></div>Anti-activity</div>
+      <div class="leg-row"><div class="leg-dot" style="background:#9148A0"></div>Anti-access</div>
+      <div class="leg-row"><div class="leg-dot" style="background:#B54040"></div>Anti-vandalism</div>
+    </div>
+  </div>
+</div>
 
+<!-- ════════════════════════════════════════
+     MATRIX
+════════════════════════════════════════ -->
+<div class="screen" id="screen-matrix">
+  <nav>
+    <div class="nav-logo" onclick="showScreen('splash')">
+      <span class="nl-red">f</span><span class="nl-r">r</span><span class="nl-r">i</span><span class="nl-red">e</span><span class="nl-red">n</span><span class="nl-red">d</span><span class="nl-r">l</span><span class="nl-r">y</span>
+    </div>
+    <div class="nav-links">
+      <div class="nav-link" id="nmat-overview" onclick="showScreen('landing')">Overview</div>
+      <div class="nav-link" id="nmat-map"      onclick="showScreen('map')">Campus map</div>
+      <div class="nav-link active" id="nmat-matrix" onclick="showScreen('matrix')">Friction matrix</div>
+    </div>
+  </nav>
   <div class="matrix-body">
-
     <div class="matrix-intro">
-      <h2 class="matrix-title">How we INFER defensive architecture would affect different identities:</h2>
+      <h2 class="matrix-title">The same design. <em>Different worlds.</em></h2>
       <span class="matrix-subtitle">Circle size = instances documented &nbsp;·&nbsp; Color = friction score &nbsp;·&nbsp; Hover cells for context</span>
     </div>
-
     <div class="matrix-card">
-
-      <!-- Persona headers -->
-      <div class="mh-row">
-        <div class="mh-spacer"></div>
-        <div class="mh-cols" id="mh-cols"></div>
-      </div>
-
-      <!-- Data rows (built by JS) -->
+      <div class="mh-row"><div class="mh-spacer"></div><div class="mh-cols" id="mh-cols"></div></div>
       <div class="m-rows" id="m-rows"></div>
-
-      <!-- Legend -->
       <div class="legend">
         <span class="leg-t">Friction</span>
         <div class="leg-items" id="leg-items"></div>
         <span class="leg-note">Hover any cell for description</span>
       </div>
-
     </div>
   </div>
 </div>
 
-
+<!-- ════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════ -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// ─── Screen switching ─────────────────────────────────────────────────────
+
+// ── Screen switcher ──────────────────────────────────────────────────────
+const NAV_IDS = {
+  landing: ['nl-overview','nm-overview','nmat-overview'],
+  map:     ['nl-map','nm-map','nmat-map'],
+  matrix:  ['nl-matrix','nm-matrix','nmat-matrix'],
+};
+
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + name).classList.add('active');
-
-  // Nav active states
-  const isLanding = name === 'landing';
-  document.getElementById('nav-home').classList.toggle('active', isLanding);
-  document.getElementById('nav-matrix').classList.toggle('active', !isLanding);
-  document.getElementById('nav-home2').classList.toggle('active', isLanding);
-  document.getElementById('nav-matrix2').classList.toggle('active', !isLanding);
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  (NAV_IDS[name] || []).forEach(id => { const el = document.getElementById(id); if(el) el.classList.add('active'); });
+  if (name === 'map') initMap();
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────
+// ── MAP ──────────────────────────────────────────────────────────────────
+const PIN_DATA = [{"id": 7, "lat": 33.773968, "lng": -84.39801, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Skateboarding, Sitting", "description": "The rough-textured granite capstones on the ledge discourage skateboarding by preventing smooth grinding and also make sitting less comfortable due to the uneven and coarse surface. The ledge is located at seat height and runs parallel to a pedestrian pathway near a high-traffic student commons building.", "photoTaken": "3/18/2026, 10:19:51 AM", "cat": "rest"}, {"id": 8, "lat": 33.773655, "lng": -84.39784, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Cycling/Scooter, Vehicle Access", "description": "Retractable steel bollards have been installed in a row across the walkway, preventing unauthorized vehicles and powered devices such as scooters or bikes from entering. The bollards are spaced to allow pedestrian access while obstructing larger or wheeled items. They are painted black with reflective tape for visibility and equipped with locking mechanisms at their base.", "photoTaken": "3/18/2026, 10:18:47 AM", "cat": "vehicle"}, {"id": 9, "lat": 33.775333, "lng": -84.397835, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Cycling/Scooter, Vehicle Entry", "description": "A row of fixed steel bollards installed across a pedestrian pathway, preventing unauthorized vehicle entry and limiting access for larger vehicles. The bollards are spaced to allow pedestrian and bicycle passage but block motor vehicles. They are coated in dark paint and have reflective strips for nighttime visibility.", "photoTaken": "3/18/2026, 10:23:35 AM", "cat": "vehicle"}, {"id": 10, "lat": 33.77573, "lng": -84.39676, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Cycling/Scooter, Anti-Vehicle", "description": "Steel bollards are positioned across the walkway, preventing unauthorized vehicle entry while allowing pedestrian and cyclist access. The bollards are approximately 1 meter tall, coated in dark brown paint, and spaced evenly to restrict larger vehicles while accommodating foot traffic. Placement creates a physical barrier without obstructing visibility.", "photoTaken": "3/18/2026, 10:26:35 AM", "cat": "vehicle"}, {"id": 11, "lat": 33.775276, "lng": -84.39616, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Sleeping, Skateboarding", "description": "Metal brackets are installed at intervals along the edge of a concrete ledge, deterring skateboarding by preventing grinding. Additionally, wooden slats are placed on top of the ledge to discourage lying down or prolonged sitting. The materials used are smooth concrete and metal for durability and aesthetics, positioned along a pedestrian pathway for maximum effectiveness.", "photoTaken": "3/18/2026, 10:24:33 AM", "cat": "rest"}, {"id": 12, "lat": 33.777023, "lng": -84.39678, "zone": "GT Campus", "context": "Public Park / Plaza", "defending": "Sitting, Sleeping", "description": "Hostile landscaping is used with uneven terrain, dense shrubbery, and a lack of flat surfaces to discourage sitting or lying down. The raised planted areas are bordered by compact hedges, preventing easy access or use of the open green spaces for resting or sleeping. Tree placements create visual barriers that further segment the area.", "photoTaken": "3/18/2026, 10:27:53 AM", "cat": "rest"}, {"id": 13, "lat": 33.77672, "lng": -84.39678, "zone": "GT Campus", "context": "Academic Building / Dorm Exterior", "defending": "VANDALISM/DAMAGE", "description": "This sign has indents to protect against people removing the T.", "photoTaken": "3/18/2026, 10:28:50 AM", "cat": "vandalism"}, {"id": 15, "lat": 33.77701, "lng": -84.39745, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Skateboarding", "description": "Metal handrails are installed along the center and edges of the staircase with frequent vertical supports. These handrails create obstructions for skateboarding down the steps by interrupting flat surfaces and limiting clear paths. The material is polished metal, ensuring durability and resistance to modification.", "photoTaken": "3/18/2026, 10:30:40 AM", "cat": "activity"}, {"id": 16, "lat": 33.775402, "lng": -84.397194, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Sleeping", "description": "Metal dividers are installed intermittently along the wooden bench seating. These dividers create physical separations, preventing users from lying across the bench and sleeping. The wood panels are placed at seat height, with dividers made of steel and evenly spaced for maximum deterrence.", "photoTaken": "3/18/2026, 10:25:18 AM", "cat": "rest"}, {"id": 18, "lat": 33.77555, "lng": -84.39591, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Skateboarding, Sitting", "description": "Metal brackets have been affixed to the wooden ledge at regular intervals, which are likely intended to discourage skateboarding and sitting. The brackets protrude slightly above the surface, making it difficult to use the ledge as a seat or for skateboard grinding. The brackets are evenly spaced and secured with visible screws, blending with the wooden aesthetic of the platform.", "photoTaken": "3/18/2026, 1:12:43 PM", "cat": "rest"}, {"id": 19, "lat": 33.780876, "lng": -84.38434, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Cycling/Scooter, Anti-Vehicle Intrusion", "description": "A row of steel bollards is installed along the sidewalk's edge and access points to restrict fast vehicles. The cylindrical bollards are spaced to block cars but allow pedestrian flow, while also discouraging cycling or scooters from speeding by designated paths. The polished metallic design blends into the urban aesthetic while maintaining functionality.", "photoTaken": "3/24/2026, 10:41:56 PM", "cat": "vehicle"}, {"id": 20, "lat": 33.78092, "lng": -84.386604, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Sleeping, Loitering", "description": "The bench features closely spaced steel bars, a curved seating surface, and armrests evenly placed to divide the seating area into discrete sections. This design prevents people from lying down across the bench and discourages prolonged occupation. The material is metal, powder-coated black, and it is bolted securely to the ground for durability and to deter removal or displacement.", "photoTaken": "3/24/2026, 10:44:50 PM", "cat": "rest"}, {"id": 21, "lat": 33.778336, "lng": -84.39788, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Cycling/Scooter, Vehicle Entry", "description": "A set of steel bollards, including two bright yellow removable ones and one fixed black bollard, is installed at the entrance of a pedestrian space. This setup prevents unauthorized vehicle entry while also obstructing scooters and bicycles from passing through easily. The materials and placement create a physical barrier while maintaining pedestrian accessibility.", "photoTaken": "3/18/2026, 10:35:48 AM", "cat": "vehicle"}, {"id": 22, "lat": 33.773163, "lng": -84.40299, "zone": "GT Campus", "context": "MARTA Station / Bus Stop", "defending": "Sleeping", "description": "The bench has mid-seating armrests installed, creating physical separations that prevent individuals from lying down comfortably, thus discouraging sleeping. The bench is constructed of metal and wood-like slats and is positioned under the bus shelter to maximize seating while deterring extended use.", "photoTaken": "3/18/2026, 10:43:03 AM", "cat": "rest"}, {"id": 23, "lat": 33.792564, "lng": -84.399734, "zone": "Midtown", "context": "Commercial / Retail Exterior", "defending": "Anti-Ram-Raiding", "description": "Steel bollards and horizontal reinforcements along window and wall base are used to deter ram-raiding. The bollards outside the entrance are positioned to block vehicle access, while the metal bars across the lower section of the transparent wall add structural resistance against impact. The materials and placement are designed to secure the storefront against forced entry via vehicles.", "photoTaken": "3/18/2026, 1:35:43 PM", "cat": "access"}, {"id": 24, "lat": 33.778187, "lng": -84.38889, "zone": "Midtown", "context": "Street / Sidewalk / Walkway", "defending": "Sleeping, Loitering", "description": "The wooden benches are oddly blocked and segmented by concrete blocks to make it uncomfortable for long-term sleeping and loitering, despite being a public space for playing chess. Additional seating opposite the bench is made of concrete blocks that are not large enough to lie on for sleeping.", "photoTaken": "3/29/2026, 6:17:36 PM", "cat": "rest"}, {"id": 25, "lat": 33.776913, "lng": -84.38827, "zone": "GT Campus", "context": "Academic Building / Dorm Exterior", "defending": "Vandalism/Damage", "description": "It is known as a tradition to steal \"T's\" off of Georgia Tech campus signs. As an act of defense, the campus has been building signs that are engraved rather than printed to prevent the \"T's\" on signs from being scratched off. ", "photoTaken": "3/29/2026, 6:21:44 PM", "cat": "vandalism"}, {"id": 26, "lat": 33.77686, "lng": -84.38771, "zone": "Tech Square", "context": "Street / Sidewalk / Walkway", "defending": "Sleeping", "description": "The bench features curved metallic bars and individual seating contours to prevent lying or sleeping across the surface. The green metallic bench promotes temporary sitting while discouraging extended use or abuse.", "photoTaken": "3/29/2026, 6:23:17 PM", "cat": "rest"}, {"id": 27, "lat": 33.775654, "lng": -84.38757, "zone": "Midtown", "context": "Academic Building / Dorm Exterior", "defending": "Sleeping, Loitering, Skateboarding", "description": "Smooth, curved concrete benches are designed with irregular shapes and integrated metal brackets, preventing individuals from lying down, comfortably lingering for extended periods, and damage from skateboard grinding. The surface is hard and uninviting, with no cushioning, and the irregular design limits usability for prolonged resting. The placement is in an open plaza near CODA to discourage misuse while maintaining aesthetic appeal.", "photoTaken": "3/29/2026, 6:27:50 PM", "cat": "rest"}, {"id": 36, "lat": 33.77651, "lng": -84.387505, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Sleeping, Skateboarding", "description": "The bench is designed with closely spaced horizontal metal bars and no flat surfaces, making it hostile to sleeping. Its curved seat frame also prevents the use of a skateboard for grinding. The bench is powder-coated green and securely bolted to the pavement, located near a landscaped area along a pedestrian walkway.", "photoTaken": "3/29/2026, 6:25:03 PM", "cat": "rest"}, {"id": 38, "lat": 33.775417, "lng": -84.3877, "zone": "GT Campus", "context": "Public Park / Plaza", "defending": "Sleeping", "description": "A slanted wooden bench design minimizes the flat surface area for laying down, effectively discouraging sleeping. The bench is integrated with subtle vertical gaps and an angled backrest that further reduce comfort for extended use, favoring brief periods of sitting in a high-traffic pedestrian space.", "photoTaken": "3/29/2026, 6:28:18 PM", "cat": "rest"}, {"id": 39, "lat": 33.77541, "lng": -84.38821, "zone": "Midtown", "context": "Academic Building / Dorm Exterior", "defending": "Sleeping, Skateboarding", "description": "The large concrete block seating surfaces by CODA have been partitioned into short sections using breaks or gaps in the surface, discouraging sleeping by making the area less suitable for lying down. Additionally, the smooth material and flat, rectangular edges may deter skateboarding by reducing opportunities for grinding.", "photoTaken": "3/29/2026, 6:29:14 PM", "cat": "rest"}, {"id": 40, "lat": 33.775494, "lng": -84.3884, "zone": "Midtown", "context": "Academic Building / Dorm Exterior", "defending": "Sleeping, Skateboarding", "description": "Metal brackets are affixed along the perimeter of a wooden seating structure to prevent people from lying down and skateboarding. The structure is placed by CODA within its outside open space and close to pedestrian pathways.", "photoTaken": "3/29/2026, 6:30:08 PM", "cat": "rest"}, {"id": 41, "lat": 33.775345, "lng": -84.38843, "zone": "Tech Square", "context": "Public Park / Plaza", "defending": "Sleeping", "description": "Curved concrete seating with sloped surfaces prevents lying down comfortably, deterring prolonged use or sleeping. The material is durable and weather-resistant, and the design is open with individual seats spaced apart to discourage large gatherings or misuse of the area by CODA.", "photoTaken": "3/29/2026, 6:30:19 PM", "cat": "rest"}, {"id": 42, "lat": 33.7753, "lng": -84.388725, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Skateboarding, Sitting", "description": "Steel plates with upward brackets have been affixed to the top surface of a low concrete ledge to prevent skateboarding and sitting. The design creates an uneven surface that discourages grinding and resting. The plates are bolted into place and are positioned along the full length of the ledge, which is adjacent to a sidewalk and landscaping.", "photoTaken": "3/29/2026, 6:32:56 PM", "cat": "rest"}, {"id": 43, "lat": 33.776997, "lng": -84.38954, "zone": "GT Campus", "context": "Public Park / Plaza", "defending": "Sleeping", "description": "The bench has individual molded seats with armrests separating each section, preventing lying down and extended use for sleeping. The material is metal, likely aluminum or steel, and the design ensures discomfort for prolonged sitting or reclining. The bench is placed on a paved area surrounded by landscaped greenery.", "photoTaken": "3/29/2026, 6:49:30 PM", "cat": "rest"}, {"id": 44, "lat": 33.776974, "lng": -84.39061, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Skateboarding", "description": "Metal angle brackets have been installed on the flat surface of a concrete ledge. These brackets act as anti-skateboarding features, preventing skateboarders from grinding along the ledge. The material appears to be galvanized steel, and the placement targets a high-traffic area adjacent to a sidewalk and open grass area.", "photoTaken": "3/29/2026, 6:52:28 PM", "cat": "activity"}, {"id": 45, "lat": 33.777042, "lng": -84.39378, "zone": "GT Campus", "context": "Commercial / Retail Exterior", "defending": "Anti-Trespassing", "description": "A high, black wrought-iron fence with pointed finials is installed to prevent entry into Russ Chandler Baseball Stadium. The vertical bars are closely spaced, and the sharp finials at the top discourage climbing while blending with the academic aesthetic. The base of the fence is reinforced with metal paneling to further limit access and visibility.", "photoTaken": "3/29/2026, 6:58:55 PM", "cat": "access"}, {"id": 46, "lat": 33.77518, "lng": -84.3964, "zone": "GT Campus", "context": "Academic Building / Dorm Exterior", "defending": "Sleeping, Loitering", "description": "Large cylindrical boulders with rough, irregular surfaces are placed at intervals on the pavement. These make it difficult to use the surface for lying or sleeping. The material is unpolished stone, positioned near bike racks and pedestrian corridors to manage behavior in these areas.", "photoTaken": "3/29/2026, 7:08:42 PM", "cat": "rest"}, {"id": 47, "lat": 33.775337, "lng": -84.39609, "zone": "GT Campus", "context": "MARTA Station / Bus Stop", "defending": "Sitting, Sleeping", "description": "The structure is a frame with horizontal metal bars that limit the use of the covered shelter for sleeping or extended sitting. The lack of enclosed sides, slanted surfaces, and no integrated seating makes it impractical for prolonged or comfort-based use. The bus stop is situated along a walkway by a high-traffic academic building, emphasizing formal transit or brief stops over loitering or resting.", "photoTaken": "3/29/2026, 7:07:46 PM", "cat": "rest"}, {"id": 48, "lat": 33.774662, "lng": -84.39933, "zone": "GT Campus", "context": "Academic Building / Dorm Exterior", "defending": "Vandalism/Damage", "description": "It is known as a tradition to steal \"T's\" off of Georgia Tech campus signs. As an act of defense, the campus has been building signs that are engraved rather than printed to prevent the \"T's\" on signs from being scratched off. ", "photoTaken": "3/29/2026, 7:16:10 PM", "cat": "vandalism"}, {"id": 49, "lat": 33.774567, "lng": -84.399254, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Sleeping, Skateboarding", "description": "The ledge, built from granite stone, has uneven blocks and mortar gaps, providing an unstable and uncomfortable surface for lying down. Additionally, the sculpture of a seated figure promotes short-term photography and sitting.", "photoTaken": "3/29/2026, 7:15:52 PM", "cat": "rest"}, {"id": 50, "lat": 33.774704, "lng": -84.39987, "zone": "GT Campus", "context": "Public Park / Plaza", "defending": "Sleeping", "description": "The bench consists of evenly spaced wooden slats mounted on metal supports, leaving gaps between each slat. This design makes it uncomfortable for users to lie down and prevents prolonged resting or sleeping. The curved shape and absence of continuous flat surfaces also emphasize short-term use.", "photoTaken": "3/29/2026, 7:17:14 PM", "cat": "rest"}, {"id": 51, "lat": 33.776, "lng": -84.40085, "zone": "GT Campus", "context": "Public Park / Plaza", "defending": "Sleeping", "description": "The seating arrangement features individual metal chairs without cushions and small bench sections with wooden tops, all designed to discourage lying down and sleeping.", "photoTaken": "3/29/2026, 7:31:45 PM", "cat": "rest"}, {"id": 52, "lat": 33.774715, "lng": -84.40021, "zone": "GT Campus", "context": "Public Park / Plaza", "defending": "Sleeping", "description": "The semi-circular bench features individual slats with gaps between them, making it uncomfortable for prolonged periods of lying down and thus effectively deterring sleeping. The gaps are uniform and consistent, and the bench structure is fixed to a gravel base area, maximizing its use for short-term sitting. It also discourages misuse of the decorative structure that is meant to recognize fraternities and sororities.", "photoTaken": "3/29/2026, 7:18:13 PM", "cat": "rest"}, {"id": 53, "lat": 33.774998, "lng": -84.40253, "zone": "GT Campus", "context": "MARTA Station / Bus Stop", "defending": "Sleeping, Loitering", "description": "A bench with integrated mid-bench armrests is placed under a covered bus stop, making lying down impossible and discouraging extended occupancy. The bus stop is located along a pedestrian corridor and includes ample open space, ensuring quick throughput and discouraging lingering, especially when it is raining or during cold weather.", "photoTaken": "3/29/2026, 7:40:51 PM", "cat": "rest"}, {"id": 54, "lat": 33.77595, "lng": -84.40267, "zone": "GT Campus", "context": "Academic Building / Dorm Exterior", "defending": "Vandalism/Damage", "description": "It is known as a tradition to steal \"T's\" off of Georgia Tech campus signs. As an act of defense, the campus has been building signs that are engraved rather than printed to prevent the \"T's\" on signs from being scratched off. ", "photoTaken": "3/29/2026, 7:38:34 PM", "cat": "vandalism"}, {"id": 55, "lat": 33.774815, "lng": -84.401405, "zone": "GT Campus", "context": "Academic Building / Dorm Exterior", "defending": "Sleeping", "description": "The seating structure is made of a metal mesh frame, which has the primary function of discouraging lying down or sleeping due to the uneven and perforated surface. Although cushions are present, they do not fully mitigate discomfort, especially on the mesh sides and frame edges. Its sturdy, fixed design also deters any repositioning for alternative uses.", "photoTaken": "3/29/2026, 7:43:10 PM", "cat": "rest"}, {"id": 56, "lat": 33.774998, "lng": -84.400795, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Sleeping", "description": "The table features integrated metal benches with steep angles and little flat surfaces for lying down, effectively deterring sleeping behavior. The galvanized steel structure is bolted into place on a gravel surface, emphasizing durability and immobility while targeting prolonged occupancy.", "photoTaken": "3/29/2026, 7:51:05 PM", "cat": "rest"}, {"id": 58, "lat": 33.773857, "lng": -84.39686, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Sleeping, Skateboarding", "description": "Brick ledges have a raised and uneven surface design, disrupting smooth horizontal planes. This discourages skateboard grinding and extended sitting or lying down. The edges are consistently aligned with varying brick heights to create small, irregular gaps.", "photoTaken": "3/29/2026, 8:03:25 PM", "cat": "rest"}, {"id": 59, "lat": 33.77464, "lng": -84.398865, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Cycling/Scooter", "description": "Two steel bollards are installed at the entrance of a paved walkway to control speeding vehicles. These bollards are designed to block vehicles and discourage speeding cycling or scooter use while allowing pedestrian access. The spacing between the bollards ensures effectiveness against larger wheeled devices.", "photoTaken": "3/29/2026, 7:55:05 PM", "cat": "vehicle"}, {"id": 61, "lat": 33.773994, "lng": -84.39662, "zone": "GT Campus", "context": "Academic Building / Dorm Exterior", "defending": "Sleeping", "description": "The table by Skiles features attached benches with individual seating sections, separated by gaps between each seat. This design discourages lying down or sleeping on the benches while still allowing sitting. The table and benches are constructed of wood and metal, bolted to the ground for permanence.", "photoTaken": "3/29/2026, 8:04:35 PM", "cat": "rest"}, {"id": 62, "lat": 33.771904, "lng": -84.39378, "zone": "GT Campus", "context": "Commercial / Retail Exterior", "defending": "Anti-Trespassing", "description": "Tall vertical steel fencing with pointed tops surrounds the entry gate area, restricting access and making climbing difficult. Metal turnstiles and barriers further control crowd movements and prevent unauthorized entry to Bobby Dodd Stadium. The materials are durable steel, designed for security and behavior enforcement.", "photoTaken": "3/29/2026, 8:20:21 PM", "cat": "access"}, {"id": 63, "lat": 33.77348, "lng": -84.3937, "zone": "GT Campus", "context": "Commercial / Retail Exterior", "defending": "Anti-Trespassing", "description": "Tall vertical wrought iron fencing with pointed tips, accompanied by locked gates, has been installed to prevent unauthorized access. The fence is reinforced with 'No Trespassing' signage to deter entry into the area beyond. The height and design make climbing difficult, effectively restricting access to the Bobby Dodd Stadium.", "photoTaken": "3/29/2026, 8:24:57 PM", "cat": "access"}, {"id": 64, "lat": 33.77669, "lng": -84.39208, "zone": "GT Campus", "context": "MARTA Station / Bus Stop", "defending": "Sleeping, Loitering", "description": "Benches at the bus stop shelter are designed without a backrest and feature individual metal slats with gaps, discouraging prolonged use or lying down. The shelter includes narrow seating areas, positioned to maximize throughput and minimize extended occupation.", "photoTaken": "3/29/2026, 8:35:46 PM", "cat": "rest"}, {"id": 65, "lat": 33.776966, "lng": -84.391716, "zone": "GT Campus", "context": "MARTA Station / Bus Stop", "defending": "Sleeping", "description": "Benches at the bus stop shelter are designed without a backrest and feature individual metal slats with gaps, discouraging prolonged use or lying down. The shelter includes narrow seating areas, positioned to maximize throughput and minimize extended occupation.", "photoTaken": "3/29/2026, 8:36:40 PM", "cat": "rest"}, {"id": 66, "lat": 33.776814, "lng": -84.39085, "zone": "Tech Square", "context": "Street / Sidewalk / Walkway", "defending": "Sleeping, Skateboarding", "description": "A concrete bench-like ledge is constructed with a slightly narrow top surface and lacks backrests or armrests, discouraging long-term sitting or lying down. Additionally, overhead steel beams are covered with wire mesh to prevent climbing or loitering. The structure lines the edge of the sidewalk adjacent to a landscaped area.", "photoTaken": "3/29/2026, 8:38:00 PM", "cat": "rest"}, {"id": 67, "lat": 33.780422, "lng": -84.389336, "zone": "GT Campus", "context": "Commercial / Retail Exterior", "defending": "Sleeping", "description": "The wooden seating surface outside of the Hub incorporates an angled design, which prevents users from lying down comfortably and deters sleeping. The seating surrounds a large metal planter and is integrated in such a way that it appears intentional while enforcing behavioral exclusion. The materials include wood for the seating and metal for the planter.", "photoTaken": "3/29/2026, 9:07:12 PM", "cat": "rest"}, {"id": 68, "lat": 33.780342, "lng": -84.38929, "zone": "Midtown", "context": "Commercial / Retail Exterior", "defending": "Skateboarding", "description": "Metal anti-skateboarding brackets have been installed on the granite ledge at regular intervals. These brackets project outward, preventing skateboarders from grinding along the edge. The ledge is situated outside of the NCR building, and its material and height make it an appealing but inaccessible surface for skateboarding.", "photoTaken": "3/29/2026, 6:15:01 PM", "cat": "activity"}, {"id": 69, "lat": 33.77856, "lng": -84.38863, "zone": "Midtown", "context": "Commercial / Retail Exterior", "defending": "Anti-Trespassing", "description": "A tall, black, metal pointed-top fence is installed along the perimeter of the property. The sharp tips act as a deterrent to climbing, preventing unauthorized access to the area behind the fence, including a garage door and utility entry. The fence is bolted into the sidewalk, providing a robust barrier.", "photoTaken": "", "cat": "access"}, {"id": 70, "lat": 33.7763, "lng": -84.404755, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Cycling/Scooter, Anti-Vehicle Entry", "description": "Steel bollards are installed along the edge of the sidewalk to restrict unauthorized vehicle entry and prevent cyclists or scooters from riding onto pedestrian areas. They are spaced evenly apart with a fixed, sturdy design, and are dark gray to blend with the urban environment. Additional yellow bollards reinforce access control closer to the parking entrance.", "photoTaken": "", "cat": "vehicle"}, {"id": 71, "lat": 33.77715, "lng": -84.405045, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Skateboarding", "description": "Anti-skateboarding angled metal brackets have been attached to the horizontal rails of the handrails on both sides of the staircase. These metal brackets are spaced closely together and create interruptions along the rail surface, preventing smooth grinding by skateboarders. The brackets are made of steel and have been welded to ensure durability while being unobtrusive to pedestrians using the railings for support.", "photoTaken": "", "cat": "activity"}, {"id": 72, "lat": 33.77778, "lng": -84.40501, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Cycling/Scooter", "description": "Large decorative boulders are placed intermittently along the edge of a sidewalk to act as a barrier and prevent bicycles or scooters from cutting across the adjacent dirt path. The rocks are irregularly shaped and positioned to form a physical and visual boundary without obstructing pedestrian movement along the path. Placement follows the curve of the sidewalk, effectively discouraging shortcutting.", "photoTaken": "", "cat": "vehicle"}, {"id": 73, "lat": 33.778008, "lng": -84.405174, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Cycling/Scooter, Sitting", "description": "The pathway is bordered by dense ornamental landscaping and narrow green spaces without seating accommodations, discouraging loitering or sitting. The bushes and plants create a natural barrier, while the absence of benches or ledges enforces constant movement through the area.", "photoTaken": "", "cat": "rest"}, {"id": 74, "lat": 33.777283, "lng": -84.40225, "zone": "GT Campus", "context": "Street / Sidewalk / Walkway", "defending": "Skateboarding, Cycling/Scooter", "description": "Embedded stone strips create textured, uneven surfaces along the concrete pathway, discouraging smooth traversal by skateboards, scooters, and bicycles. These strips intersect key pedestrian crossing points, ensuring disruption of wheeled motion. The material is coarse granite and is positioned intermittently within the walkway for maximum deterrence.", "photoTaken": "", "cat": "vehicle"}];
+
+const CAT_COLORS = {
+  rest:      '#5B7FC4',
+  vehicle:   '#3E9162',
+  activity:  '#C4703A',
+  access:    '#9148A0',
+  vandalism: '#B54040',
+};
+const CAT_LABELS = {
+  rest: 'Anti-rest', vehicle: 'Anti-vehicle',
+  activity: 'Anti-activity', access: 'Anti-access', vandalism: 'Anti-vandalism',
+};
+
+let mapInstance = null;
+let allLayers   = [];
+let activeFilter = 'all';
+
+function makeIcon(cat) {
+  const col = CAT_COLORS[cat] || '#888';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="34" viewBox="0 0 26 34">
+    <path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 21 13 21s13-11.25 13-21C26 5.82 20.18 0 13 0z" fill="${col}"/>
+    <circle cx="13" cy="13" r="5.5" fill="white" opacity="0.9"/>
+  </svg>`;
+  return L.divIcon({
+    html: svg,
+    className: '',
+    iconSize: [26, 34],
+    iconAnchor: [13, 34],
+    popupAnchor: [0, -36],
+  });
+}
+
+function buildPopup(p) {
+  const col = CAT_COLORS[p.cat] || '#888';
+  
+  // Create the image element pointing to your renamed assets
+  // We use p.id to match the 'img_id.jpg' format
+  const photoImg = `<img src="assets/img_${p.id}.jpg" 
+                         alt="${CAT_LABELS[p.cat]}" 
+                         class="mp-photo" 
+                         onerror="this.style.display='none'">`;
+
+  const pills = p.context.split('/').map(s =>
+    `<span class="mp-pill">${s.trim()}</span>`
+  ).join('') + `<span class="mp-pill">${p.zone}</span>`;
+  
+  const photoInfo = p.photoTaken ? 
+    `<div class="mp-id">ID #${p.id} &nbsp;·&nbsp; ${p.photoTaken}</div>` : 
+    `<div class="mp-id">ID #${p.id}</div>`;
+
+  return `<div class="map-popup">
+    ${photoImg}
+    <div class="mp-cat" style="color:${col}">${CAT_LABELS[p.cat]}</div>
+    <div class="mp-defending">${p.defending}</div>
+    <div class="mp-pills">${pills}</div>
+    <div class="mp-desc">${p.description}</div>
+    ${photoInfo}
+  </div>`;
+}
+
+function initMap() {
+  if (mapInstance) { mapInstance.invalidateSize(); return; }
+
+  mapInstance = L.map('map-el', {
+    center: [33.776, -33.776, -84.396],
+    zoom: 16,
+    zoomControl: true,
+  });
+  mapInstance.setView([33.776, -84.396], 16);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 19,
+  }).addTo(mapInstance);
+
+  PIN_DATA.forEach(p => {
+    const marker = L.marker([p.lat, p.lng], { icon: makeIcon(p.cat) })
+      .bindPopup(buildPopup(p), { maxWidth: 360 });
+    marker._catKey = p.cat;
+    marker.addTo(mapInstance);
+    allLayers.push(marker);
+  });
+
+  // Filter buttons
+  document.querySelectorAll('.filt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat;
+      activeFilter = cat;
+      document.querySelectorAll('.filt-btn').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      allLayers.forEach(m => {
+        if (cat === 'all' || m._catKey === cat) {
+          if (!mapInstance.hasLayer(m)) m.addTo(mapInstance);
+        } else {
+          if (mapInstance.hasLayer(m)) mapInstance.removeLayer(m);
+        }
+      });
+    });
+  });
+}
+
+// ── MATRIX DATA ──────────────────────────────────────────────────────────
 const PERSONAS = [
-  { key: 'student',  label: 'student',  sub: 'BuzzCard holder · campus access' },
-  { key: 'visitor',  label: 'visitor',  sub: 'Public guest · short term stay' },
-  { key: 'unhoused', label: 'unhoused', sub: 'No indoor access · very limited options' },
+  { key:'student',  label:'student',  sub:'BuzzCard holder · campus access' },
+  { key:'visitor',  label:'visitor',  sub:'Public guest · short term stay' },
+  { key:'unhoused', label:'unhoused', sub:'No indoor access · very limited options' },
+];
+const MATRIX_ROWS = [
+  { label:'Anti-rest', sub:'Sleeping + sitting', count:22, scores:{
+    student: {s:2,d:'Can retreat indoors to Clough, dorms, or dining at any time.'},
+    visitor: {s:2,d:'Visitors often look for places to sit while waiting, but other seating options exist nearby.'},
+    unhoused:{s:5,d:'Direct assault on primary survival need — sleep and rest.'},
+  }},
+  { label:'Anti-vehicle', sub:'Cycling + scootering', count:10, scores:{
+    student: {s:3,d:'Many students scooter or bike to class and are blocked by bollards, though walking remains an option.'},
+    visitor: {s:2,d:'Confusing for Uber pickup zones, but generally accepted as city design.'},
+    unhoused:{s:1,d:'Minimal direct impact on their primary needs or movement.'},
+  }},
+  { label:'Anti-activity', sub:'Skateboarding', count:16, scores:{
+    student: {s:3,d:'Students who skateboard find most ledges and rails fitted with brackets, leaving very few spots on campus.'},
+    visitor: {s:1,d:'Brackets and bolts blend into the architecture, barely noticeable.'},
+    unhoused:{s:2,d:'Limits movement options but does not affect survival needs directly.'},
+  }},
+  { label:'Anti-access', sub:'Trespassing + fencing', count:5, scores:{
+    student: {s:1,d:'Has alternative indoor routes and BuzzCard access to most buildings.'},
+    visitor: {s:1,d:'Standard property boundary, expected and respected.'},
+    unhoused:{s:5,d:'Excludes them from areas and potential rest places, removing limited shelter options.'},
+  }},
+  { label:'Anti-vandalism', sub:'Surveillance + signage', count:4, scores:{
+    student: {s:4,d:'Taking the "T" off signs is a student tradition — engraved letters directly remove that ability.'},
+    visitor: {s:1,d:'Standard campus security infrastructure, no behavioral impact.'},
+    unhoused:{s:1,d:"Removing T\'s from signs is a student tradition — irrelevant to unhoused individuals."},
+  }},
 ];
 
-const ROWS = [
-  {
-    label: 'Anti-rest', sub: 'Sleeping + sitting', count: 22,
-    scores: {
-      student:  { s: 2, d: 'Can retreat indoors to Clough, dorms, or dining at any time.' },
-      visitor:  { s: 2, d: 'Visitors often look for places to sit while waiting, but other seating options exist nearby.' },
-      unhoused: { s: 5, d: 'Direct assault on primary survival need — sleep and rest.' },
-    }
-  },
-  {
-    label: 'Anti-vehicle', sub: 'Cycling + scootering', count: 10,
-    scores: {
-      student:  { s: 3, d: 'Many students scooter or bike to class and are blocked by bollards, though walking remains an option.' },
-      visitor:  { s: 2, d: 'Confusing for Uber pickup zones, but generally accepted as city design.' },
-      unhoused: { s: 1, d: 'Minimal direct impact on their primary needs or movement.' },
-    }
-  },
-  {
-    label: 'Anti-activity', sub: 'Skateboarding', count: 16,
-    scores: {
-      student:  { s: 3, d: 'Students who skateboard find most ledges and rails fitted with brackets, leaving very few spots on campus.' },
-      visitor:  { s: 1, d: 'Brackets and bolts blend into the architecture, barely noticeable.' },
-      unhoused: { s: 2, d: 'Limits movement options but does not affect survival needs directly.' },
-    }
-  },
-  {
-    label: 'Anti-access', sub: 'Trespassing + fencing', count: 5,
-    scores: {
-      student:  { s: 1, d: 'Has alternative indoor routes and BuzzCard access to most buildings.' },
-      visitor:  { s: 1, d: 'Standard property boundary, expected and respected.' },
-      unhoused: { s: 5, d: 'Excludes them from areas and potential rest places, removing limited shelter options.' },
-    }
-  },
-  {
-    label: 'Anti-vandalism', sub: 'Surveillance + signage', count: 4,
-    scores: {
-      student:  { s: 4, d: 'Taking the "T" off signs is a student tradition — engraved letters directly remove that ability.' },
-      visitor:  { s: 1, d: 'Standard campus security infrastructure, no behavioral impact.' },
-      unhoused: { s: 1, d: "Removing T's from signs is a student tradition — this intervention has no relevance to unhoused individuals." },
-    }
-  },
-];
-
-// ─── Helpers ──────────────────────────────────────────────────────────────
 function frictionColor(s) {
-  const stops = [[1,'#888780'],[2,'#BA7517'],[3,'#D85A30'],[4,'#A32D2D'],[5,'#E8291C']];
-  for (const [v, c] of stops) { if (s <= v) return c; }
-  return '#E8291C';
+  return [[1,'#888780'],[2,'#BA7517'],[3,'#D85A30'],[4,'#A32D2D'],[5,'#E8291C']].find(([v])=>s<=v)[1];
 }
 function scoreLabel(s) {
-  return ['','Invisible','Inconvenience','Minor deterrence','Major barrier','Total exclusion'][s] || '';
+  return ['','Invisible','Inconvenience','Minor deterrence','Major barrier','Total exclusion'][s];
 }
-function bubbleSize(count) {
-  // min 44px at count=4, max 88px at count=22
-  return Math.round(44 + ((count - 4) / (22 - 4)) * 44);
-}
+function bubbleSize(c) { return Math.round(44+((c-4)/(22-4))*44); }
 
-// ─── Build persona headers ────────────────────────────────────────────────
+// Build persona headers
 const mhCols = document.getElementById('mh-cols');
 PERSONAS.forEach(p => {
   const d = document.createElement('div');
@@ -203,50 +320,37 @@ PERSONAS.forEach(p => {
   mhCols.appendChild(d);
 });
 
-// ─── Build data rows ──────────────────────────────────────────────────────
-const mRows = document.getElementById('m-rows');
-ROWS.forEach(row => {
+// Build rows
+const mRowsEl = document.getElementById('m-rows');
+MATRIX_ROWS.forEach(row => {
   const div = document.createElement('div');
   div.className = 'm-row';
-
-  let cellsHTML = '';
+  let ch = '';
   PERSONAS.forEach(p => {
-    const sc   = row.scores[p.key];
-    const sz   = bubbleSize(row.count);
-    const col  = frictionColor(sc.s);
+    const sc = row.scores[p.key];
+    const sz = bubbleSize(row.count);
+    const col = frictionColor(sc.s);
     const opac = (0.18 + sc.s * 0.16).toFixed(2);
-    cellsHTML += `
-      <div class="m-cell">
-        <div class="bubble-col">
-          <div class="bubble" style="width:${sz}px;height:${sz}px;background:${col};opacity:${opac};"></div>
-          <div class="score-lbl" style="color:${col};">${sc.s}/5</div>
-        </div>
-        <div class="tt">
-          <div class="tt-s" style="color:${col};">${sc.s}/5 — ${scoreLabel(sc.s)}</div>
-          <div class="tt-d">${sc.d}</div>
-        </div>
-      </div>`;
+    ch += `<div class="m-cell">
+      <div class="bubble-col">
+        <div class="bubble" style="width:${sz}px;height:${sz}px;background:${col};opacity:${opac}"></div>
+        <div class="score-lbl" style="color:${col}">${sc.s}/5</div>
+      </div>
+      <div class="tt"><div class="tt-s" style="color:${col}">${sc.s}/5 — ${scoreLabel(sc.s)}</div><div class="tt-d">${sc.d}</div></div>
+    </div>`;
   });
-
-  div.innerHTML = `
-    <div class="m-rlabel">
-      <div class="m-rname">${row.label}</div>
-      <div class="m-rsub">${row.sub}</div>
-      <div class="m-rcnt">${row.count} instances</div>
-    </div>
-    <div class="m-cells">${cellsHTML}</div>`;
-  mRows.appendChild(div);
+  div.innerHTML = `<div class="m-rlabel"><div class="m-rname">${row.label}</div><div class="m-rsub">${row.sub}</div><div class="m-rcnt">${row.count} instances</div></div><div class="m-cells">${ch}</div>`;
+  mRowsEl.appendChild(div);
 });
 
-// ─── Build legend ─────────────────────────────────────────────────────────
+// Legend
 const legItems = document.getElementById('leg-items');
-[[1,'Invisible'],[2,'Inconvenience'],[3,'Minor deterrence'],[4,'Major barrier'],[5,'Total exclusion']].forEach(([s, l]) => {
+[[1,'Invisible'],[2,'Inconvenience'],[3,'Minor deterrence'],[4,'Major barrier'],[5,'Total exclusion']].forEach(([s,l]) => {
   const span = document.createElement('span');
   span.className = 'leg-item';
-  span.innerHTML = `<span class="leg-dot" style="background:${frictionColor(s)};"></span>${s} — ${l}`;
+  span.innerHTML = `<span class="leg-dot-m" style="background:${frictionColor(s)}"></span>${s} — ${l}`;
   legItems.appendChild(span);
 });
 </script>
-
 </body>
 </html>
