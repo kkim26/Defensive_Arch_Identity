@@ -15,9 +15,6 @@ nav{flex-shrink:0;background:#F5F4F0;border-bottom:1px solid #D8D6D0;display:fle
 .nav-link:hover{color:#111}
 .nav-link.active{color:#111;border-bottom-color:#E8291C}
 
-/* ═══════════════════════════════════════════════════════════
-   SPLASH SCREEN
-═══════════════════════════════════════════════════════════ */
 #screen-splash{background:#111;justify-content:center;align-items:center}
 .splash-inner{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:860px;padding:32px}
 .splash-logo{display:flex;align-items:baseline;font-weight:900;font-size:clamp(100px,8vw,120px);letter-spacing:-0.04em;line-height:1;margin-bottom:28px;user-select:none}
@@ -34,9 +31,6 @@ nav{flex-shrink:0;background:#F5F4F0;border-bottom:1px solid #D8D6D0;display:fle
 .btn-outline:hover{border-color:#888;color:#fff}
 .splash-count{position:absolute;bottom:32px;font-size:11px;color:#333;letter-spacing:.16em;text-transform:uppercase}
 
-/* ═══════════════════════════════════════════════════════════
-   LANDING SCREEN
-═══════════════════════════════════════════════════════════ */
 #screen-landing{background:#F5F4F0}
 .landing-body{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:0}
 .landing-left{display:flex;flex-direction:column;justify-content:center;padding:56px 64px;border-right:1px solid #D8D6D0}
@@ -55,14 +49,10 @@ nav{flex-shrink:0;background:#F5F4F0;border-bottom:1px solid #D8D6D0;display:fle
 .stat-label{font-size:25px;letter-spacing:.15em;text-transform:uppercase;color:#070707;font-weight:500;margin-top:10px;margin-bottom:10px}
 .stat-desc{font-size:25px;color:#070707;line-height:1.65}
 
-/* ═══════════════════════════════════════════════════════════
-   MAP SCREEN
-═══════════════════════════════════════════════════════════ */
 #screen-map{background:#F5F4F0}
 .map-body{flex:1;display:flex;min-height:0;position:relative}
 #map-el{flex:1;min-height:0}
 .leaflet-container{background:#e8e4dd}
-
 .map-filters{position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:6px;background:#fff;border:1px solid #E0DED8;border-radius:3px;padding:8px 12px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
 .filt-btn{padding:7px 18px;border-radius:2px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:1.5px solid #E0DED8;transition:all .15s;background:none;color:#888}
 .filt-btn:hover{color:#111;border-color:#aaa}
@@ -73,8 +63,6 @@ nav{flex-shrink:0;background:#F5F4F0;border-bottom:1px solid #D8D6D0;display:fle
 .filt-btn[data-cat="activity"].on{background:#C4703A}
 .filt-btn[data-cat="access"].on{background:#9148A0}
 .filt-btn[data-cat="vandalism"].on{background:#B54040}
-
-/* Leaflet popup */
 .leaflet-popup-content-wrapper{border-radius:4px!important;box-shadow:0 4px 24px rgba(0,0,0,.14)!important;border:1px solid #E0DED8!important;padding:0!important}
 .leaflet-popup-content{margin:16px 18px!important;width:auto!important}
 .leaflet-popup-tip-container{display:none}
@@ -86,24 +74,11 @@ nav{flex-shrink:0;background:#F5F4F0;border-bottom:1px solid #D8D6D0;display:fle
 .mp-pill{font-size:10px;background:#F0EEE8;color:#666;padding:2px 9px;border-radius:2px}
 .mp-desc{font-size:12px;color:#555;line-height:1.65;margin-bottom:10px;border-top:1px solid #F0EEE8;padding-top:10px}
 .mp-id{font-size:10px;color:#bbb;letter-spacing:.08em}
-
 .map-legend{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:1000;background:rgba(255,255,255,.96);border:1px solid #E0DED8;border-radius:3px;padding:10px 20px;display:flex;align-items:center;gap:18px;font-size:11px;color:#888;box-shadow:0 2px 12px rgba(0,0,0,.06)}
 .leg-row{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.mp-photo{width:100%;height:180px;object-fit:cover;border-radius:2px;margin-bottom:12px;border:1px solid #000}
 
-/* Style the photo at the top of the popup */
-.mp-photo {
-    width: 100%;
-    height: 180px;
-    object-fit: cover; /* Crops image to fill space without stretching */
-    border-radius: 2px;
-    margin-bottom: 12px;
-    border: 1px solid #000; /* Sharp black border from your logo style */
-}
-
-/* ═══════════════════════════════════════════════════════════
-   MATRIX SCREEN
-═══════════════════════════════════════════════════════════ */
 #screen-matrix{background:#F5F4F0}
 .matrix-body{flex:1;display:flex;flex-direction:column;padding:28px 64px 24px;min-height:0;overflow:hidden}
 .matrix-intro{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;flex-shrink:0}
@@ -141,3 +116,113 @@ nav{flex-shrink:0;background:#F5F4F0;border-bottom:1px solid #D8D6D0;display:fle
 .leg-item{display:flex;align-items:center;gap:7px;font-size:13px;color:#888}
 .leg-dot-m{border-radius:50%;flex-shrink:0;width:11px;height:11px}
 .leg-note{margin-left:auto;font-size:13px;color:#ccc}
+
+
+/* ═══════════════════════════════════════════════════════════
+   ENGAGE / GET INVOLVED SCREEN
+═══════════════════════════════════════════════════════════ */
+#screen-engage { background: #F5F4F0; }
+
+.engage-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 80px;
+  gap: 40px;
+  min-height: 0;
+}
+
+.engage-header {
+  text-align: center;
+  max-width: 700px;
+}
+
+.engage-eyebrow {
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #999;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.engage-title {
+  font-size: clamp(32px, 3vw, 52px);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: #111;
+  margin-bottom: 14px;
+}
+.engage-title em { font-style: normal; color: #E8291C; }
+
+.engage-sub {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.7;
+}
+
+.engage-cards {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.engage-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  background: #fff;
+  border: 1px solid #E0DED8;
+  border-radius: 4px;
+  padding: 36px 40px;
+  width: 380px;
+  box-shadow: 0 2px 16px rgba(0,0,0,.05);
+  transition: box-shadow .2s;
+}
+.engage-card:hover { box-shadow: 0 6px 28px rgba(0,0,0,.10); }
+
+.qr-wrap {
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.qr-img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  display: block;
+}
+
+.engage-card-text { text-align: center; width: 100%; }
+
+.engage-card-title {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #111;
+  margin-bottom: 10px;
+  line-height: 1.1;
+}
+
+.engage-card-bold {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.engage-card-desc {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.6;
+}
